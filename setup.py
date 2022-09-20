@@ -3,7 +3,7 @@ from setuptools import setup
 
 setup(
     name='newkucoin',
-    version='v1.0.11',
+    version='v1.0',
     packages=['kucoin', 'kucoin/base_request', 'kucoin/margin', 'kucoin/market', 'kucoin/trade', 'kucoin/user',
               'kucoin/websocket', 'kucoin/ws_token'],
     license="MIT",
