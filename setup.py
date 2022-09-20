@@ -8,7 +8,7 @@ setup(
               'kucoin/websocket', 'kucoin/ws_token'],
     license="MIT",
     author='Rubic',
-    author_email="technology@rubicelium.io,
+    author_email="technology@rubicelium.io",
     url='https://github.com/rubicelium/newkucoin',
     description="newkucoin",
     install_requires=['requests', 'websockets'],
