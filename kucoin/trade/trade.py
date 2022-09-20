@@ -3,156 +3,33 @@ from kucoin.base_request.base_request import KucoinBaseRestApi
 
 class TradeData(KucoinBaseRestApi):
 
-    def create_any_order(self, symbol, side, clientOid='', **kwargs):
-        """
-        https://docs.kucoin.com/#place-a-margin-order
-        :param symbol: a valid trading symbol code (Mandatory)
-        :type: str
-        :param side: place direction buy or sell (Mandatory)
-        :type: str
-        :param type: limit or market
-        :type: str
-        :param clientOid: Unique order id created by users to identify their orders, e.g. UUID. (Mandatory)
-        :type: str
-        :param kwargs:  Fill in parameters with reference documents
-        :return: {
-                  "orderId": "5bd6e9286d99522a52e458de",
-                  "borrowSize":10.2,
-                  "loanApplyId":"600656d9a33ac90009de4f6f"
-                }
-        """
-        params = {
-            'symbol': symbol,
-            'side': side
-        }
-        if not clientOid:
-            clientOid = self.return_unique_id
-        params['clientOid'] = clientOid
-        if kwargs:
-            params.update(kwargs)
-
-        return self._request('POST', '/api/v1/orders', params=params)
-
-    def create_any_margin_order(self, symbol, side, clientOid='', **kwargs):
-        """
-        https://docs.kucoin.com/#place-a-margin-order
-        :param symbol: a valid trading symbol code (Mandatory)
-        :type: str
-        :param side: place direction buy or sell (Mandatory)
-        :type: str
-        :param type: limit or market
-        :type: str
-        :param clientOid: Unique order id created by users to identify their orders, e.g. UUID. (Mandatory)
-        :type: str
-        :param marginModel: Type of trading, cross, isolated, set to cross by default
-        :type: str
-        :param kwargs:  Fill in parameters with reference documents
-        :return: {
-                  "orderId": "5bd6e9286d99522a52e458de",
-                  "borrowSize":10.2,
-                  "loanApplyId":"600656d9a33ac90009de4f6f"
-                }
-        """
-        params = {
-            'symbol': symbol,
-            'side': side
-        }
-        if not clientOid:
-            clientOid = self.return_unique_id
-        params['clientOid'] = clientOid
-        if kwargs:
-            params.update(kwargs)
-
-        return self._request('POST', '/api/v1/margin/order', params=params)
-
-    def create_limit_margin_order(self, symbol, side, size, price, clientOid='', **kwargs):
-        """
-        https://docs.kucoin.com/#place-a-margin-order
-        :param symbol: a valid trading symbol code (Mandatory)
-        :type: str
-        :param side: place direction buy or sell (Mandatory)
-        :type: str
-        :param size: amount of base currency to buy or sell (Mandatory)
-        :type: str
-        :param price: price per base currency (Mandatory)
-        :type: str
-        :param clientOid: Unique order id created by users to identify their orders, e.g. UUID. (Mandatory)
-        :type: str
-        :param kwargs:  Fill in parameters with reference documents
-        :return: {
-                  "orderId": "5bd6e9286d99522a52e458de",
-                  "borrowSize":10.2,
-                  "loanApplyId":"600656d9a33ac90009de4f6f"
-                }
-        """
-        params = {
-            'symbol': symbol,
-            'size': size,
-            'side': side,
-            'price': price,
-            'marginMode': None,
-            'type': "limit"
-        }
-        if not clientOid:
-            clientOid = self.return_unique_id
-        params['clientOid'] = clientOid
-        if kwargs:
-            params.update(kwargs)
-
-        return self._request('POST', '/api/v1/margin/order', params=params)
-
-    def create_market_margin_order(self, symbol, side, clientOid='', **kwargs):
-        """
-        https://docs.kucoin.com/#place-a-margin-order
-        :param symbol: a valid trading symbol code (Mandatory)
-        :type: str
-        :param side: place direction buy or sell (Mandatory)
-        :type: str
-        :param clientOid: Unique order id created by users to identify their orders, e.g. UUID. (Mandatory)
-        :type: str
-        :param kwargs:  Fill in parameters with reference documents
-        :return: {
-                  "orderId": "5bd6e9286d99522a52e458de",
-                  "borrowSize":10.2,
-                  "loanApplyId":"600656d9a33ac90009de4f6f"
-                }
-        """
-        params = {
-            'symbol': symbol,
-            'side': side,
-            'marginMode': None,
-            'type': "market"
-        }
-        if not clientOid:
-            clientOid = self.return_unique_id
-        params['clientOid'] = clientOid
-        if kwargs:
-            params.update(kwargs)
-
-        return self._request('POST', '/api/v1/margin/order', params=params)
-
-    def create_limit_order(self, symbol, side, size, price, clientOid='', **kwargs):
+    def create_new_order(self, symbol, side, clientOid='', **kwargs):
         """
         https://docs.kucoin.com/#place-a-new-order
-        :param symbol: a valid trading symbol code (Mandatory)
+        :param clientOid: Unique order id created by users to identify their orders, e.g. UUID. (Mandatory)
         :type: str
         :param side: place direction buy or sell (Mandatory)
         :type: str
-        :param size: amount of base currency to buy or sell (Mandatory)
+        :param symbol: a valid trading symbol code (Mandatory)
         :type: str
-        :param price: price per base currency (Mandatory)
+        :param type: [Optional] limit or market (default is limit)
         :type: str
-        :param clientOid: Unique order id created by users to identify their orders, e.g. UUID. (Mandatory)
+        :param remark: [Optional] remark for the order, length cannot exceed 100 utf8 characters
         :type: str
+        :param stp: [Optional] self trade prevention , CN, CO, CB or DC
+        :type: str
+        :param tradeType: [Optional] NO LONGER ACCEPTS MARGIN ORDERS must use 'create_new_margin_order', fixed to TRADE account
+        :type: str
+        :param autoBorrow: [Optional] Auto-borrow to place order. The system will first borrow you funds at the optimal interest rate and then place an order for you. Currently autoBorrow parameter only supports cross mode, not isolated mode
         :param kwargs:  Fill in parameters with reference documents
-        :return: {'orderId': '5d9ee461f24b80689797fd04'}
+        :param kwargs:  Fill in parameters with reference documents
+        :return: {
+                  "orderId": "5bd6e9286d99522a52e458de"
+                 }
         """
         params = {
             'symbol': symbol,
-            'size': size,
-            'side': side,
-            'price': price,
-            'type': "limit"
+            'side': side
         }
         if not clientOid:
             clientOid = self.return_unique_id
@@ -161,6 +38,43 @@ class TradeData(KucoinBaseRestApi):
             params.update(kwargs)
 
         return self._request('POST', '/api/v1/orders', params=params)
+
+    def create_new_margin_order(self, symbol, side, clientOid='', **kwargs):
+        """
+        https://docs.kucoin.com/#place-a-margin-order
+        :param clientOid: Unique order id created by users to identify their orders, e.g. UUID. (Mandatory)
+        :type: str
+        :param side: place direction buy or sell (Mandatory)
+        :type: str
+        :param symbol: a valid trading symbol code (Mandatory)
+        :type: str
+        :param type: [Optional] limit or market (default is limit)
+        :type: str
+        :param remark: [Optional] remark for the order, length cannot exceed 100 utf8 characters
+        :type: str
+        :param stp: [Optional] self trade prevention , CN, CO, CB or DC
+        :type: str
+        :param marginModel: [Optional] The type of trading, including cross (cross mode) and isolated (isolated mode). It is set at cross by default.
+        :type: str
+        :param autoBorrow: [Optional] Auto-borrow to place order. The system will first borrow you funds at the optimal interest rate and then place an order for you. Currently autoBorrow parameter only supports cross mode, not isolated mode
+        :param kwargs:  Fill in parameters with reference documents
+        :return: {
+                  "orderId": "5bd6e9286d99522a52e458de",
+                  "borrowSize":10.2,
+                  "loanApplyId":"600656d9a33ac90009de4f6f"
+                }
+        """
+        params = {
+            'symbol': symbol,
+            'side': side
+        }
+        if not clientOid:
+            clientOid = self.return_unique_id
+        params['clientOid'] = clientOid
+        if kwargs:
+            params.update(kwargs)
+
+        return self._request('POST', '/api/v1/margin/order', params=params)
 
     def create_limit_stop_order(self, symbol, side, size, price, stopPrice,  clientOid="", **kwargs):
         params = {
