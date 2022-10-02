@@ -141,7 +141,7 @@ class MarginData(KucoinBaseRestApi):
         params = {}
         if kwargs:
             params.update(kwargs)
-        return self._request('GET', '/api/v1/isolated/borrow/outstanding', params=params)
+        return self._request('GET', '/api/v1/isolated/accounts', params=params)
 
     def get_single_isolated_account(self, symbol):
         """
