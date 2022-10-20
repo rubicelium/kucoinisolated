@@ -226,7 +226,7 @@ class MarginData(KucoinBaseRestApi):
         params = {
             'symbol': symbol,
             'currency': currency,
-            'borrowStrategy': order_type,
+            'borrowStrategy': borrowStrategy,
             'size': size,
         }
         if kwargs:
