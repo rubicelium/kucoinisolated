@@ -203,7 +203,7 @@ class MarginData(KucoinBaseRestApi):
             params.update(kwargs)
         return self._request('POST', '/api/v1/margin/borrow', params=params)
 
-    def create_isolated_borrow_order(self, symbol, currency, order_type, size, **kwargs):
+    def create_isolated_borrow_order(self, symbol, currency, borrowStrategy, size, **kwargs):
         """
         https://docs.kucoin.com/#isolated-margin-borrowing
         :param currency: Currency to Borrow (Mandatory)
