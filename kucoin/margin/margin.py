@@ -208,7 +208,7 @@ class MarginData(KucoinBaseRestApi):
         https://docs.kucoin.com/#isolated-margin-borrowing
         :param currency: Currency to Borrow (Mandatory)
         :type: str
-        :param order_type: Type: FOK, IOC (Mandatory)
+        :param borrowStrategy: Type: FOK, IOC (Mandatory)
         :type: str
         :param size: Total size (Mandatory)
         :type: float
